@@ -27,9 +27,9 @@ const IconSpan = styled.span`
   margin-right: 5px;
 `;
 
-const Category = (props) => {
+const Category = ({ onCategorySelect, title }) => {
   let icon;
-  switch (props.title) {
+  switch (title) {
     case "animal":
       icon = "fa fa-wpbeginner";
       break;
@@ -41,10 +41,9 @@ const Category = (props) => {
       break;
   }
   return (
-    <CategoryDiv>
-      <CategoryTitle>{props.title ? props.title : "Loading..."}</CategoryTitle>
+    <CategoryDiv onClick={() => onCategorySelect(title)}>
+      <CategoryTitle>{title ? title : "Loading..."}</CategoryTitle>
     </CategoryDiv>
-    
   );
 };
 

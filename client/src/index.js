@@ -1,25 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import App from "./App";
-import { createGlobalStyle } from "styled-components";
-import Colors from "./assets/styles/colors";
 
-// define global styles.
-const GlobalStyle = createGlobalStyle`
-  body,html {
-    color: ${Colors.primary};
-    font-family: 'Krub', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-`;
+// initialize client.
+const client = new ApolloClient({
+  uri: "http://localhost:8000/",
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalStyle whiteColor={false} />
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
