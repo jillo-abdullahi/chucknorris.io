@@ -1,9 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useQuery, gql } from "@apollo/client";
+
 import Navigation from "./navigation";
 import JokeContainer from "./jokeContainer";
 import Category from "./category";
+import SkeletonLoader from "./skeletonLoader";
 
 const FETCH_CATEGORIES = gql`
   query GetCategories {
@@ -14,13 +16,33 @@ const FETCH_CATEGORIES = gql`
 const Landing = () => {
   const [currentCategory, setCurrentCategory] = useState("animal");
   const { loading, error, data } = useQuery(FETCH_CATEGORIES);
-  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  const categories = data.categories;
 
   const onCategorySelect = (category) => {
-    setCurrentCategory(category)
-  }
+    setCurrentCategory(category);
+  };
+
+  //get number of skeleton loaders for category section.
+  const getNumberOfSkeletons = (
+    width,
+    margin,
+    height = "auto",
+    numSkeletons = 16
+  ) => {
+    let content = [];
+    for (let i = 0; i < numSkeletons; i++) {
+      content.push(
+        <SkeletonLoader width={width} margin={margin} height={height} />
+      );
+    }
+
+    return content;
+  };
+
+  // Skeleton loader for categories section.
+  const CategoriesSkeleton = () => (
+    <SkeletonContainer>{getNumberOfSkeletons("100px", "5px")}</SkeletonContainer>
+  );
 
   return (
     <div className="container">
@@ -31,21 +53,38 @@ const Landing = () => {
           <div>
             <CategoryContainer>
               <CategoryLayout>
-                {categories &&
-                  categories.map((category, index) => {
-                    return <Category title={category} key={index} onCategorySelect={onCategorySelect}/>;
-                  })}
+                {loading? (
+                  <CategoriesSkeleton />
+                ) : (
+                  data.categories &&
+                  data.categories.map((category, index) => {
+                    return (
+                      <Category
+                        title={category}
+                        key={index}
+                        onCategorySelect={onCategorySelect}
+                      />
+                    );
+                  })
+                )}
               </CategoryLayout>
             </CategoryContainer>
           </div>
           <div>
-            <JokeContainer currentCategory={currentCategory}/>
+            <JokeContainer currentCategory={currentCategory} getNumberOfSkeletons={getNumberOfSkeletons} />
           </div>
         </Wrapper>
       </Main>
     </div>
   );
 };
+
+//category skeleton loader container.
+const SkeletonContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
 
 const Main = styled.main`
   height: 100vh;

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
 import Colors from "../assets/styles/colors";
-import ChuckLoader from "../assets/images/chuck-loader.png";
 
 const FETCH_CATEGORY_JOKE = gql`
   query GetCategoryJoke($category: String!) {
@@ -13,20 +12,25 @@ const FETCH_CATEGORY_JOKE = gql`
   }
 `;
 
-const JokeContainer = ({ currentCategory }) => {
-  const { loading, error, data, refetch } = useQuery(FETCH_CATEGORY_JOKE, {
+const JokeContainer = ({ currentCategory, getNumberOfSkeletons }) => {
+  const { loading, error, data } = useQuery(FETCH_CATEGORY_JOKE, {
     variables: { category: currentCategory },
   });
+
+  //skeleton loader for joke container.
+  const JokeSkeleton = () => (
+    <SkeletonContainer>
+      {getNumberOfSkeletons("100%", "0", "250px", 1)}
+    </SkeletonContainer>
+  );
+
+  // add loader state.
+  if(loading) return <JokeSkeleton />
 
   return (
     <JokeWrapper>
       <JokeDiv>
-        {loading ? (
-          <div>
-            <PlaceholderImage src={ChuckLoader} alt="loader icon"/>
-            <PlaceholderText>{jokePlaceholder}</PlaceholderText>
-          </div>
-        ) : error ? (
+        {error ? (
           <span>Error: {error.message}</span>
         ) : (
           <>
@@ -43,6 +47,12 @@ const JokeContainer = ({ currentCategory }) => {
     </JokeWrapper>
   );
 };
+
+const SkeletonContainer = styled.div`
+  margin-top: 2rem;
+  border-radius: 10px;
+  min-height: 250px;
+`;
 
 const JokeWrapper = styled.div`
   display: flex;
@@ -73,8 +83,7 @@ const JokeDiv = styled.div`
 `;
 
 // joke category not selected content
-const jokePlaceholder =
-  "Click on a category above before you get a roundhouse kick!";
+const jokePlaceholder = "Calling Chuck...";
 
 const JokeIcon = styled.img`
   margin-bottom: 20px;
@@ -85,7 +94,6 @@ const PlaceholderImage = styled.img`
   margin-bottom: 20px;
   height: 60px;
   opacity: 0.5;
-
 `;
 
 const PlaceholderText = styled.p`
