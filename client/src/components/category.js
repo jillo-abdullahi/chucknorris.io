@@ -1,50 +1,57 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 import Colors from "../assets/styles/colors";
 
+const Category = ({ onCategorySelect, title }) => {
+  const currentStoredCategory = useSelector((state) => state.currentCategory);
+
+  return (
+    <CategoryDiv
+      currentStoredCategory={currentStoredCategory}
+      title={title}
+      onClick={() => onCategorySelect(title)}
+    >
+      <CategoryTitle
+        currentStoredCategory={currentStoredCategory}
+        title={title}
+      >
+        {title ? title : ""}
+      </CategoryTitle>
+    </CategoryDiv>
+  );
+};
+
+//individual category wrapper.
 const CategoryDiv = styled.div`
   border-radius: 5px;
   min-width: 100px;
   border: 2px solid ${Colors.primary};
   margin: 5px;
-  background-color: #354256;
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: ${(props) =>
+    props.title === props.currentStoredCategory
+      ? "none"
+      : "1px 1px #000, 1px 1px #000, 2px 2px #000"};
+  background-color: ${(props) =>
+    props.title === props.currentStoredCategory ? "#438e47" : "#354256"};
   cursor: pointer;
+  text-align: center;
+
+  &:active {
+    box-shadox: none;
+    -webkit-transform: translate(2px, 2px);
+    transform: translate(2px, 2px);
+  }
 `;
 
 //category title
 const CategoryTitle = styled.span`
   font-size: 1rem;
   font-weight: 500;
-  color: #fff;
+  color: ${(props) =>
+    props.title === props.currentStoredCategory ? "#000" : "#fff"};
   padding: 8px;
   text-align: center;
 `;
-
-//icon span
-const IconSpan = styled.span`
-  margin-right: 5px;
-`;
-
-const Category = ({ onCategorySelect, title }) => {
-  let icon;
-  switch (title) {
-    case "animal":
-      icon = "fa fa-wpbeginner";
-      break;
-    case "travel":
-      icon = "fa fa-free-code-camp";
-      break;
-    default:
-      icon = "fa fa-superpowers";
-      break;
-  }
-  return (
-    <CategoryDiv onClick={() => onCategorySelect(title)}>
-      <CategoryTitle>{title ? title : "Loading..."}</CategoryTitle>
-    </CategoryDiv>
-  );
-};
 
 export default Category;

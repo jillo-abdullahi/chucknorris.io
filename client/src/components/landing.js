@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styled from "styled-components";
 import { useQuery, gql } from "@apollo/client";
+import { useDispatch } from "react-redux";
 
 import Navigation from "./navigation";
 import JokeContainer from "./jokeContainer";
+import Footer from "./footer";
 import Category from "./category";
 import SkeletonLoader from "./skeletonLoader";
+import { storeCurrentCategory } from "../redux/actions";
 
 const FETCH_CATEGORIES = gql`
   query GetCategories {
@@ -14,12 +17,17 @@ const FETCH_CATEGORIES = gql`
 `;
 
 const Landing = () => {
-  const [currentCategory, setCurrentCategory] = useState("animal");
+  const jokeWell = useRef(null);
+  const dispatch = useDispatch();
+  const [currentCategory, setCurrentCategory] = useState("");
   const { loading, error, data } = useQuery(FETCH_CATEGORIES);
   if (error) return <p>Error: {error.message}</p>;
 
   const onCategorySelect = (category) => {
     setCurrentCategory(category);
+
+    // dispatch current category to redux store.
+    dispatch(storeCurrentCategory(category));
   };
 
   //get number of skeleton loaders for category section.
@@ -41,7 +49,9 @@ const Landing = () => {
 
   // Skeleton loader for categories section.
   const CategoriesSkeleton = () => (
-    <SkeletonContainer>{getNumberOfSkeletons("100px", "5px")}</SkeletonContainer>
+    <SkeletonContainer>
+      {getNumberOfSkeletons("100px", "5px")}
+    </SkeletonContainer>
   );
 
   return (
@@ -53,7 +63,7 @@ const Landing = () => {
           <div>
             <CategoryContainer>
               <CategoryLayout>
-                {loading? (
+                {loading ? (
                   <CategoriesSkeleton />
                 ) : (
                   data.categories &&
@@ -71,10 +81,15 @@ const Landing = () => {
             </CategoryContainer>
           </div>
           <div>
-            <JokeContainer currentCategory={currentCategory} getNumberOfSkeletons={getNumberOfSkeletons} />
+            <JokeContainer
+              currentCategory={currentCategory}
+              getNumberOfSkeletons={getNumberOfSkeletons}
+              reference={jokeWell}
+            />
           </div>
         </Wrapper>
       </Main>
+      <Footer />
     </div>
   );
 };
@@ -87,8 +102,7 @@ const SkeletonContainer = styled.div`
 `;
 
 const Main = styled.main`
-  height: 100vh;
-  padding-top: 20px;
+  padding: 20px 0;
 `;
 
 const CategoryContainer = styled.div`

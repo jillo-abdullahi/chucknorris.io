@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
 import Colors from "../assets/styles/colors";
+import ChuckLoader from "../assets/images/chuck-loader.png";
 
 const FETCH_CATEGORY_JOKE = gql`
   query GetCategoryJoke($category: String!) {
@@ -12,7 +13,7 @@ const FETCH_CATEGORY_JOKE = gql`
   }
 `;
 
-const JokeContainer = ({ currentCategory, getNumberOfSkeletons }) => {
+const JokeContainer = ({ currentCategory, getNumberOfSkeletons, reference }) => {
   const { loading, error, data } = useQuery(FETCH_CATEGORY_JOKE, {
     variables: { category: currentCategory },
   });
@@ -25,25 +26,34 @@ const JokeContainer = ({ currentCategory, getNumberOfSkeletons }) => {
   );
 
   // add loader state.
-  if(loading) return <JokeSkeleton />
+  if (loading) return <JokeSkeleton />;
+
+  //initial state before category is selected
 
   return (
-    <JokeWrapper>
+    <JokeWrapper ref={reference}>
       <JokeDiv>
-        {error ? (
-          <span>Error: {error.message}</span>
+        {data.joke ? (
+          error ? (
+            <span>Error: {error.message}</span>
+          ) : (
+            <>
+              <JokeIcon src={data.joke.icon_url} alt="placeholder" />
+              <div>{data.joke.value}</div>
+            </>
+          )
         ) : (
           <>
-            <JokeIcon src={data.joke.icon_url} alt="placeholder" />
-            <div>{data.joke.value}</div>
+            <PlaceholderImage
+              src={ChuckLoader}
+              alt="placeholder"
+            ></PlaceholderImage>
+            <div>
+              <PlaceholderText>{jokePlaceholderText}</PlaceholderText>
+            </div>
           </>
         )}
       </JokeDiv>
-      <ButtonWrapper>
-        <button className="btn btn-primary" disabled={loading}>
-          Next
-        </button>
-      </ButtonWrapper>
     </JokeWrapper>
   );
 };
@@ -65,13 +75,6 @@ const JokeWrapper = styled.div`
   min-height: 250px;
 `;
 
-const ButtonWrapper = styled.div`
-  border-top: 2px solid ${Colors.primary};
-  width: 100%;
-  padding: 10px;
-  text-align: right;
-`;
-
 const JokeDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -83,7 +86,7 @@ const JokeDiv = styled.div`
 `;
 
 // joke category not selected content
-const jokePlaceholder = "Calling Chuck...";
+const jokePlaceholderText = "Don't want a roundhouse kick? Pick a category above quick!";
 
 const JokeIcon = styled.img`
   margin-bottom: 20px;
@@ -93,10 +96,11 @@ const JokeIcon = styled.img`
 const PlaceholderImage = styled.img`
   margin-bottom: 20px;
   height: 60px;
-  opacity: 0.5;
+  opacity: 0.8;
 `;
 
 const PlaceholderText = styled.p`
-  opacity: 0.5;
+  opacity: 0.8;
+  font-size: 16px;
 `;
 export default JokeContainer;
