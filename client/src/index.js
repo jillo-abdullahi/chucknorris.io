@@ -7,7 +7,7 @@ import App from "./App";
 
 // initialize client.
 const client = new ApolloClient({
-  uri: "http://localhost:4000/",
+  uri: "https://norris-chuck.herokuapp.com/",
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
