@@ -13,7 +13,10 @@ const FETCH_CATEGORY_JOKE = gql`
   }
 `;
 
-const JokeContainer = ({ currentCategory, getNumberOfSkeletons, reference }) => {
+const JokeContainer = ({
+  currentCategory,
+  getNumberOfSkeletons,
+}) => {
   const { loading, error, data } = useQuery(FETCH_CATEGORY_JOKE, {
     variables: { category: currentCategory },
   });
@@ -31,7 +34,7 @@ const JokeContainer = ({ currentCategory, getNumberOfSkeletons, reference }) => 
   //initial state before category is selected
 
   return (
-    <JokeWrapper ref={reference}>
+    <JokeWrapper>
       <JokeDiv>
         {data.joke ? (
           error ? (
@@ -39,7 +42,7 @@ const JokeContainer = ({ currentCategory, getNumberOfSkeletons, reference }) => 
           ) : (
             <>
               <JokeIcon src={data.joke.icon_url} alt="placeholder" />
-              <div>{data.joke.value}</div>
+              <JokeValue>{data.joke.value}</JokeValue>
             </>
           )
         ) : (
@@ -85,8 +88,13 @@ const JokeDiv = styled.div`
   padding: 20px;
 `;
 
+const JokeValue = styled.div`
+  font-weight: 500;
+`;
+
 // joke category not selected content
-const jokePlaceholderText = "Don't want a roundhouse kick? Pick a category above quick!";
+const jokePlaceholderText =
+  "Don't want a roundhouse kick? Pick a category above quick!";
 
 const JokeIcon = styled.img`
   margin-bottom: 20px;

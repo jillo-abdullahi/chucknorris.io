@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { useQuery, gql } from "@apollo/client";
 import { useDispatch } from "react-redux";
@@ -17,7 +17,6 @@ const FETCH_CATEGORIES = gql`
 `;
 
 const Landing = () => {
-  const jokeWell = useRef(null);
   const dispatch = useDispatch();
   const [currentCategory, setCurrentCategory] = useState("");
   const { loading, error, data } = useQuery(FETCH_CATEGORIES);
@@ -27,6 +26,7 @@ const Landing = () => {
     setCurrentCategory(category);
 
     // dispatch current category to redux store.
+    // using this to style current category that's been selected.
     dispatch(storeCurrentCategory(category));
   };
 
@@ -40,7 +40,7 @@ const Landing = () => {
     let content = [];
     for (let i = 0; i < numSkeletons; i++) {
       content.push(
-        <SkeletonLoader width={width} margin={margin} height={height} />
+        <SkeletonLoader key={i} width={width} margin={margin} height={height} />
       );
     }
 
@@ -80,11 +80,10 @@ const Landing = () => {
               </CategoryLayout>
             </CategoryContainer>
           </div>
-          <div>
+          <div id="to-the-joke">
             <JokeContainer
               currentCategory={currentCategory}
               getNumberOfSkeletons={getNumberOfSkeletons}
-              reference={jokeWell}
             />
           </div>
         </Wrapper>

@@ -19,6 +19,8 @@ const FooterWrapper = styled.div`
   margin-bottom: 10px;
 `;
 
-const PoweredBy = styled.div``;
+const PoweredBy = styled.div`
+  font-weight: 500;
+`;
 
 export default Footer;

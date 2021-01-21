@@ -7,6 +7,7 @@ import Colors from "./assets/styles/colors";
 const GlobalStyle = createGlobalStyle`
   body,html {
     color: ${Colors.primary};
+    scroll-behavior: smooth;
     font-family: 'Krub', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;

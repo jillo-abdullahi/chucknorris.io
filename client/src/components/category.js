@@ -10,6 +10,7 @@ const Category = ({ onCategorySelect, title }) => {
     <CategoryDiv
       currentStoredCategory={currentStoredCategory}
       title={title}
+      href="#to-the-joke"
       onClick={() => onCategorySelect(title)}
     >
       <CategoryTitle
@@ -23,7 +24,7 @@ const Category = ({ onCategorySelect, title }) => {
 };
 
 //individual category wrapper.
-const CategoryDiv = styled.div`
+const CategoryDiv = styled.a`
   border-radius: 5px;
   min-width: 100px;
   border: 2px solid ${Colors.primary};
@@ -41,6 +42,16 @@ const CategoryDiv = styled.div`
     box-shadox: none;
     -webkit-transform: translate(2px, 2px);
     transform: translate(2px, 2px);
+  }
+
+  &:focus {
+    box-shadox: none;
+    -webkit-transform: translate(2px, 2px);
+    transform: translate(2px, 2px);
+  }
+
+  &:hover {
+    text-decoration: none;
   }
 `;
 
