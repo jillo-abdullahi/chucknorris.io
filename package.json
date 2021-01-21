@@ -1,0 +1,20 @@
+{
+  "name": "chuck-norris-io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm start --prefix server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jillo-abdullahi/chucknorris.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jillo-abdullahi/chucknorris.io/issues"
+  },
+  "homepage": "https://github.com/jillo-abdullahi/chucknorris.io#readme"
+}
