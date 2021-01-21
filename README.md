@@ -1,7 +1,7 @@
 # Chuck-norris.io
 A React web app for all your Chuck Norris jokes needs.
 
-![home screen](https://ibb.co/yh3BfvZ)
+![home screen](https://i.ibb.co/dbhJWCV/home.png)
 
 To jump right into viewing the project, go to the following urls:
 
