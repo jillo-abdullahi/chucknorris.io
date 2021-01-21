@@ -7,7 +7,7 @@ import App from "./App";
 
 // initialize client.
 const client = new ApolloClient({
-  uri: "http://localhost:8000/",
+  uri: "http://localhost:4000/",
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {

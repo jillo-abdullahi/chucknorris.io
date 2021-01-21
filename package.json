@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jillo-abdullahi/chucknorris.io/issues"
   },
-  "homepage": "https://github.com/jillo-abdullahi/chucknorris.io#readme"
+  "homepage": "https://github.com/jillo-abdullahi/chucknorris.io#readme",
+  "dependencies": {
+    "nodemon": "^2.0.7"
+  }
 }
